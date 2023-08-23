@@ -1,4 +1,4 @@
-import 'package:inheritance/bank-account.dart';
+import 'package:inheritance/bank_account.dart';
 
 void main() {
 
