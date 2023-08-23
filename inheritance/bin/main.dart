@@ -2,8 +2,8 @@ import 'package:inheritance/bank_account.dart';
 
 void main() {
 
-  SavingsAccount savings = SavingsAccount('SA123', 1000, 0.05);
-  CheckingAccount checking = CheckingAccount('CA456', 500, 200);
+  SavingAccount savings = SavingAccount( balance: 1000, interestRate: 0.05);
+  CheckingAccount checking = CheckingAccount( balance: 500,  overdraftLimit:200);
 
   savings.deposit(200);
   savings.addInterest();

@@ -1,53 +1,67 @@
 class BankAccount {
-  String accountNumber;
 
   double _balance = 0;
 
-  BankAccount(this.accountNumber, this._balance);
+  BankAccount({double balance = 0}) : _balance = balance;
 
   double get balance => _balance;
 
-  void deposit(double amount) {
+  deposit(double amount) {
     _balance += amount;
-    print('$amount deposited. New balance: $balance');
+    print('${this.runtimeType}: $amount deposited. New balance: $_balance');
   }
 
-  void withdraw(double amount) {
-    if (amount <= balance) {
+  bool withdraw(double amount) {
+    if (amount <= _balance) {
       _balance -= amount;
-      print('$amount withdrawn. New balance: $balance');
-    } else {
-      print('Insufficient funds');
+      print('${this.runtimeType}: $amount withdrawn. New balance: $balance');
+      return true;
+    }else{
+      print('${this.runtimeType}: Insufficient funds');
+      return false;
     }
+
   }
 }
 
-class SavingsAccount extends BankAccount {
-  double interestRate;
+class SavingAccount extends BankAccount {
+  double _interestRate = 0;
 
-  SavingsAccount(String accountNumber, double balance, this.interestRate)
-      : super(accountNumber, balance);
+  SavingAccount({double balance = 0, double interestRate = 0})
+      : _interestRate = interestRate,
+        super( balance: balance);
 
-  void addInterest() {
-    double interest = balance * interestRate;
+  double get interestRate => _interestRate;
+
+  set interestRate(double value) {
+    if (value > 0) {
+      _interestRate = value;
+    }
+  }
+
+  addInterest() {
+    double interest = _balance * _interestRate;
     _balance += interest;
-    print('Interest added: $interest. New balance: $balance');
+    print('${this.runtimeType}: Interest added: $interest. New balance: $balance');
   }
 }
 
 class CheckingAccount extends BankAccount {
-  double overdraftLimit;
 
-  CheckingAccount(String accountNumber, double balance, this.overdraftLimit)
-      : super(accountNumber, balance);
+  final double _overdraftLimit;
+
+  CheckingAccount({double balance=0, double overdraftLimit=0})
+      : _overdraftLimit = overdraftLimit, super(balance: balance);
 
   @override
-  void withdraw(double amount) {
-    if (amount <= balance + overdraftLimit) {
+  bool withdraw(double amount) {
+    if (amount <= balance + _overdraftLimit) {
       _balance -= amount;
-      print('$amount withdrawn. New balance: $balance');
+      print('${this.runtimeType}: $amount withdrawn. New balance: $balance');
+      return true;
     } else {
-      print('Exceeds overdraft limit');
+      print('${this.runtimeType}: Exceeds overdraft limit');
+      return false;
     }
   }
 }
