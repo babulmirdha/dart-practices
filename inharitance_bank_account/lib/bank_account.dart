@@ -45,23 +45,3 @@ class SavingAccount extends BankAccount {
     print('${this.runtimeType}: Interest added: $interest. New balance: $balance');
   }
 }
-
-class CheckingAccount extends BankAccount {
-
-  final double _overdraftLimit;
-
-  CheckingAccount({double balance=0, double overdraftLimit=0})
-      : _overdraftLimit = overdraftLimit, super(balance: balance);
-
-  @override
-  bool withdraw(double amount) {
-    if (amount <= balance + _overdraftLimit) {
-      _balance -= amount;
-      print('${this.runtimeType}: $amount withdrawn. New balance: $balance');
-      return true;
-    } else {
-      print('${this.runtimeType}: Exceeds overdraft limit');
-      return false;
-    }
-  }
-}
