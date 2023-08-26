@@ -9,6 +9,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   # path: ^1.8.0
+  uuid: ^3.0.4
 
 dev_dependencies:
   lints: ^2.0.0

@@ -1,47 +1,60 @@
 class BankAccount {
-
+  String _accountNumber = '';
+  String _accountTitle = '';
   double _balance = 0;
 
-  BankAccount({double balance = 0}) : _balance = balance;
+  bool _isActive = true;
+
+  BankAccount(String accountTitle, double balance) {
+    if (accountTitle.isEmpty || balance < 0) {
+      throw ArgumentError("Invalid account information");
+    }
+
+    _accountTitle = accountTitle;
+    _balance = balance;
+    _accountNumber = generateAccountNumber();
+
+    print("acNo $_accountNumber");
+  }
+
+  String get accountNumber => _accountNumber;
+
+  String get accountTitle => _accountTitle;
 
   double get balance => _balance;
 
+  set isActive(bool isActive) {
+    _isActive = isActive;
+  }
+
   deposit(double amount) {
+    if (!_isActive) {
+      throw Exception("Account Status is inactive");
+    }
+
+    if (amount < 0) {
+      throw ArgumentError("Invalid deposit amount");
+    }
+
     _balance += amount;
     print('${this.runtimeType}: $amount deposited. New balance: $_balance');
   }
 
-  bool withdraw(double amount) {
+  void withdraw(double amount) {
+    if (amount < 0) {
+      throw ArgumentError("Invalid withdraw amount");
+    }
+
     if (amount <= _balance) {
       _balance -= amount;
       print('${this.runtimeType}: $amount withdrawn. New balance: $balance');
-      return true;
-    }else{
-      print('${this.runtimeType}: Insufficient funds');
-      return false;
-    }
-
-  }
-}
-
-class SavingAccount extends BankAccount {
-  double _interestRate = 0;
-
-  SavingAccount({double balance = 0, double interestRate = 0})
-      : _interestRate = interestRate,
-        super( balance: balance);
-
-  double get interestRate => _interestRate;
-
-  set interestRate(double value) {
-    if (value > 0) {
-      _interestRate = value;
+    } else {
+      print('${this.runtimeType}: Insufficient balance');
+      throw Exception("Insufficient funds");
     }
   }
 
-  addInterest() {
-    double interest = _balance * _interestRate;
-    _balance += interest;
-    print('${this.runtimeType}: Interest added: $interest. New balance: $balance');
+  String generateAccountNumber() {
+    return 'AC${DateTime.now().millisecondsSinceEpoch}';
   }
 }
