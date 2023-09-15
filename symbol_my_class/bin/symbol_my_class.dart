@@ -1,19 +1,18 @@
-import 'package:symbol_my_class/symbol_my_class.dart' as symbol_my_class;
+import 'dart:mirrors';
 
 class MyClass {
-  void doSomething() {
-    print('Doing something');
+  void sayHello() {
+    print('Hello, World!');
   }
 }
 
 void main() {
-  var symbol = #doSomething; // Create a symbol
-  var myInstance = MyClass();
+  MyClass myInstance = MyClass();
+  Symbol sayHelloSymbol = Symbol('sayHello');
 
-  // Access a class member using the symbol
-  myInstance.invoke(symbol);
+  // Get the InstanceMirror for myInstance
+  InstanceMirror im = reflect(myInstance);
 
-  // Using a symbol as a key in a map
-  var symbolMap = {symbol: 'This is a symbol key'};
-  print(symbolMap[symbol]); // Access the value using the symbol
+  // Invoke the sayHello method using the Symbol
+  im.invoke(sayHelloSymbol,[]);
 }
