@@ -1,15 +1,17 @@
 import 'dart:io';
-
 import 'package:package_http/business/post_manager.dart';
-
 
 void main() async {
   try {
-    int id = 1;
-    var post = await fetchPost(id);
-    print('Post with $id: $post');
 
- } on SocketException catch (e) {
+    var posts = await fetchPosts();
+
+    posts.forEach((element) {
+      element.show();
+    });
+
+
+  } on SocketException catch (e) {
     print(e);
   } on HttpException catch (e) {
     print(e);
