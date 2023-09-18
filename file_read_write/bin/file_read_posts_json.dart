@@ -30,7 +30,7 @@ void main(){
    }
 
 
-   posts.forEach((p) {
+   for (var p in posts) {
 
     print("Title: ${p.title}");
     print("Body: ${p.body}");
@@ -38,7 +38,7 @@ void main(){
     //p.show(); // Home work
     print("");
 
-   });
+   }
 
 
 
