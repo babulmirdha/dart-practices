@@ -25,16 +25,6 @@ class Post {
   }
 
 
-  static List<Post> postList(List<dynamic> json){
-
-    List<Post> list = [];
-
-    for (var element in json) {
-      list.add(Post.fromJson(element));
-    }
-
-    return list;
-  }
 
   @override
   String toString() {

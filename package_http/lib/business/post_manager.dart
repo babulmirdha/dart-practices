@@ -26,7 +26,14 @@ Future<List<Post>> fetchPosts() async {
   var data = jsonDecode(response.body);
 
   if (response.statusCode == 200) {
-    return Post.postList(data);
+
+    List<Post> list = [];
+
+    for (var element in data) {
+      list.add(Post.fromJson(element));
+    }
+
+    return list;
   } else {
     throw HttpException('${response.statusCode}');
   }
