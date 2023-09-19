@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:package_http/business/post_manager.dart';
 
-
 void main() async {
   try {
     int id = 1;

@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-
 class Post {
   final int userId;
   final int id;
