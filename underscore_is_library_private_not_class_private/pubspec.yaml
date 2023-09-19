@@ -1,4 +1,4 @@
-name: package_http
+name: underscore_is_library_private_not_class_private
 description: A sample command-line application.
 version: 1.0.0
 # repository: https://github.com/my_org/my_repo
@@ -9,7 +9,6 @@ environment:
 # Add regular dependencies here.
 dependencies:
   # path: ^1.8.0
-    http: ^1.1.0
 
 dev_dependencies:
   lints: ^2.0.0
