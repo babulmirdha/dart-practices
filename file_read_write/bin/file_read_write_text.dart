@@ -6,9 +6,11 @@ void main() async {
 
   var personsFile = File(filename);
 
-  //Reading from file
-  personsFile.readAsString().then((String contents) {
+  fn(String contents) {
     print(contents);
-  });
+  }
+
+  //Reading from file
+  personsFile.readAsString().then(fn);
 
 }

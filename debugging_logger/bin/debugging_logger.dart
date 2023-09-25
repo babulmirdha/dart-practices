@@ -8,12 +8,6 @@ var loggerNoStack = Logger(
   printer: PrettyPrinter(methodCount: 0),
 );
 
-void main() {
-  print(
-      'Run with either `dart example/main.dart` or `dart --enable-asserts example/main.dart`.');
-  demo();
-}
-
 void demo() {
 
   logger.d('Log message with 2 methods');
@@ -27,4 +21,13 @@ void demo() {
   loggerNoStack.t({'key': 5, 'value': 'something'});
 
   Logger(printer: SimplePrinter(colors: true)).t('boom');
+}
+
+void main() {
+  print("Start line");
+  print(
+      'Run with either `dart example/main.dart.dart` or `dart --enable-asserts example/main.dart.dart`.');
+  demo();
+
+  print("End line");
 }
