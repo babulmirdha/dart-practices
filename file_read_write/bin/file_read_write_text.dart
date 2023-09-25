@@ -9,10 +9,6 @@ void main() async {
   //Reading from file
   personsFile.readAsString().then((String contents) {
     print(contents);
-
-
-
-
   });
 
 }
