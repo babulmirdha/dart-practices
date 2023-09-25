@@ -6,8 +6,8 @@ void main() async {
 
     var posts = await fetchPosts();
 
-    posts.forEach((element) {
-      element.show();
+    posts.forEach((post) {
+      post.show();
     });
 
 
