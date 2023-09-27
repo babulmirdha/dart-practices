@@ -27,7 +27,7 @@ class App {
 
 void main() {
   // can use configuration file to select
-  // kind of loggger to use
+  // kind of logger to use
   var app = App(logger: ConsoleLogger());
   app.run();
 }
