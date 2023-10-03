@@ -1,5 +1,5 @@
 import 'dart:io';
-
+// This is just a comment.
 void readFileUsingAwaitAsync() async {
   final file = File('assets/my_file.text');
 
