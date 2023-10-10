@@ -4,11 +4,11 @@ import 'package:package_http/business/post_manager.dart';
 
 void main() async {
   try {
-    int id = 1;
+    int id = 2;
 
     var post = await fetchPost(id);
 
-    print('Post with $id: $post');
+    print('Post id: $id');
 
     post.show();
 

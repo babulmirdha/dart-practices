@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 void main() async {
@@ -6,11 +5,17 @@ void main() async {
 
   var personsFile = File(filename);
 
-  fn(String contents) {
+  //async: Reading from file
+  personsFile.readAsString().then((String contents) {
     print(contents);
-  }
+  });
 
-  //Reading from file
-  personsFile.readAsString().then(fn);
 
+
+  // Sync
+  // var contents = await personsFile.readAsString();
+  //
+  // print(contents);
+
+  print("End Line");
 }
