@@ -1,7 +1,7 @@
 
 import 'dart:async';
 
-void main() {
+Future<void> main() async {
   // Create a stream controller
   var controller = StreamController<String>();
 
@@ -14,8 +14,9 @@ void main() {
   });
 
   // Add some events to the stream
-  controller.add('Event 1');
-  controller.add('Event 2');
+  controller.add('Position (1,2)');
+  await Future.delayed(Duration(seconds: 5));
+  controller.add('Position (2,3)');
 
   // Close the stream
   controller.close();
