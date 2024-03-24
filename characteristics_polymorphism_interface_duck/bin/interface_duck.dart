@@ -72,22 +72,18 @@ class RubberDuck extends Duck implements Quackable, Flyable{
 
   @override
   void quack() {
-    print("Rubber Duck: Quack");
+    print("Rubber Duck: Squack");
   }
 }
 
 
 // Subclass 3
-class DecoyDuck extends Duck implements Quackable, Flyable{
+class DecoyDuck extends Duck implements Quackable{
   @override
   void display() {
     print("Decoy Duck: Displaying");
   }
 
-  @override
-  void fly() {
-    print("Decoy Duck: Flying");
-  }
 
   @override
   void quack() {
@@ -123,5 +119,5 @@ void main() {
   decoyDuck.quack();
   decoyDuck.swim();
   decoyDuck.display();
-  decoyDuck.fly();
+
 }
