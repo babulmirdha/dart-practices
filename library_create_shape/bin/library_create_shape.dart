@@ -1,5 +1,14 @@
-import 'package:shape';
+import 'package:library_create_shape/shapes.dart';
 
 void main(List<String> arguments) {
-  print('Hello world: ${library_create_shape.calculate()}!');
+
+ var circle = Circle(radius: 10);
+
+ print(circle.area);
+
+ var square = Square(length: 10);
+
+ print(square.area);
+
+
 }
