@@ -1,0 +1,20 @@
+[
+  {
+    "id": "034054",
+    "name": "Md Babul Mirdha",
+    "dept": "CSE",
+    "cgpa": 2.98
+  },
+  {
+    "id": "034055",
+    "name": "Md Tuhin ",
+    "dept": "CST",
+    "cgpa": 3.54
+  },
+  {
+    "id": "034059",
+    "name": "Himel",
+    "dept": "CST",
+    "cgpa": 3.50
+  }
+]
