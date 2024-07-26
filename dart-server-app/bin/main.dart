@@ -6,25 +6,16 @@ import 'package:shelf_router/shelf_router.dart';
 
 import 'student.dart';
 
-// Extension method to add firstWhereOrNull to List
-extension FirstWhereOrNullExtension<E> on List<E> {
-  E? firstWhereOrNull(bool Function(E element) test) {
-    for (var element in this) {
-      if (test(element)) return element;
-    }
-    return null;
-  }
-}
+List<Student>? students;
 
- List<Student>? students;
+var studentFileName = "assets/students.json";
 
- void loadStudents(){
-  var file = File("assets/students.json");
+void loadStudents() {
+  var file = File(studentFileName);
 
   var content = file.readAsStringSync();
 
   var list = jsonDecode(content);
-
 
   students ??= [];
 
@@ -41,7 +32,9 @@ Response _handleGetAll(Request request) {
 }
 
 Response _handleGetById(Request request, String id) {
-  final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+  // final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+  final Student? student = students?.where((s) => s.id == id).firstOrNull;
+
   if (student == null) {
     return Response.notFound('Student not found');
   }
@@ -54,23 +47,65 @@ Response _handleGetById(Request request, String id) {
 Future<Response> _handleCreate(Request request) async {
   final payload = await request.readAsString();
   final data = jsonDecode(payload);
-  final student = Student.fromJson(data);
-  students?.add(student);
-  return Response.ok(
-    jsonEncode(student.toJson()),
-    headers: {'Content-Type': 'application/json'},
+  final newStudent = Student.fromJson(data);
+
+  final Student? oldStudent =
+      students?.where((s) => s.id == newStudent.id).firstOrNull;
+
+  if (oldStudent == null) {
+    students?.add(newStudent);
+
+    saveStudentListToJsonDb();
+
+    return Response.ok(
+      jsonEncode(newStudent.toJson()),
+      headers: {'Content-Type': 'application/json'},
+    );
+  } else {
+    // Student ID already taken
+    return Response(
+      409, // HTTP status code for Conflict
+      body: jsonEncode({'error': 'Student ID already taken'}),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+  }
+}
+
+Future<void> saveStudentListToJsonDb() async {
+  // Convert the list of Student objects to a JSON list
+  List<Map<String, dynamic>> jsonList =
+      students?.map((student) => student.toJson()).toList() ?? [];
+
+  // Convert the JSON list to a JSON string
+  String jsonString = jsonEncode(jsonList);
+
+  var file = await File(studentFileName).writeAsString(
+    jsonString,
+    mode: FileMode.write, // This specifies that the content should be written
   );
+
+  print(file.toString());
 }
 
 Future<Response> _handleUpdate(Request request, String id) async {
   final payload = await request.readAsString();
   final data = jsonDecode(payload);
-  final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+
+  // final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+
+  final Student? student = students?.where((s) => s.id == id).firstOrNull;
+
   if (student == null) {
     return Response.notFound('Student not found');
   }
+
   student.name = data['name'];
-  student.cgpa = data['age'];
+  student.dept = data['dept'];
+  student.cgpa = data['cgpa'];
+
+  saveStudentListToJsonDb();
+
   return Response.ok(
     jsonEncode(student.toJson()),
     headers: {'Content-Type': 'application/json'},
@@ -80,12 +115,20 @@ Future<Response> _handleUpdate(Request request, String id) async {
 Future<Response> _handlePatch(Request request, String id) async {
   final payload = await request.readAsString();
   final data = jsonDecode(payload);
-  final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+
+  // final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+
+  final Student? student = students?.where((s) => s.id == id).firstOrNull;
+
   if (student == null) {
     return Response.notFound('Student not found');
   }
   student.name = data['name'] ?? student.name;
-  student.cgpa = data['age'] ?? student.cgpa;
+  student.dept = data['dept'] ?? student.dept;
+  student.cgpa = data['cgpa'] ?? student.cgpa;
+
+  saveStudentListToJsonDb();
+
   return Response.ok(
     jsonEncode(student.toJson()),
     headers: {'Content-Type': 'application/json'},
@@ -93,17 +136,23 @@ Future<Response> _handlePatch(Request request, String id) async {
 }
 
 Response _handleDelete(Request request, String id) {
-  final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+  // final Student? student = students?.firstWhereOrNull((s) => s.id == id);
+
+  final Student? student = students?.where((s) => s.id == id).firstOrNull;
+
   if (student == null) {
     return Response.notFound('Student not found');
   }
   students?.remove(student);
-  return Response.ok('Student deleted', headers: {'Content-Type': 'text/plain'});
+
+  saveStudentListToJsonDb();
+
+  return Response.ok('Student deleted',
+      headers: {'Content-Type': 'text/plain'});
 }
 
 void main() async {
-
-   loadStudents();
+  loadStudents();
 
   final router = Router();
 
@@ -118,8 +167,7 @@ void main() async {
   final ip = InternetAddress.anyIPv4;
 
   // Configure a pipeline that logs requests.
-  final handler =
-  Pipeline().addMiddleware(logRequests()).addHandler(router);
+  final handler = Pipeline().addMiddleware(logRequests()).addHandler(router);
 
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');

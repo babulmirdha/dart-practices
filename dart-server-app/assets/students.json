@@ -1,20 +1,26 @@
 [
   {
     "id": "034054",
-    "name": "Md Babul Mirdha",
+    "name": "Mr Mirdha",
     "dept": "CSE",
     "cgpa": 2.98
   },
   {
-    "id": "034055",
-    "name": "Md Tuhin ",
+    "id": "034050",
+    "name": "Bina",
     "dept": "CST",
-    "cgpa": 3.54
+    "cgpa": 3.56
   },
   {
-    "id": "034059",
-    "name": "Himel",
-    "dept": "CST",
-    "cgpa": 3.50
+    "id": "034055",
+    "name": "Badrul Islam",
+    "dept": "CSE",
+    "cgpa": 3.56
+  },
+  {
+    "id": "034008",
+    "name": "Anisur Rahman",
+    "dept": "CSE",
+    "cgpa": 3.56
   }
 ]
