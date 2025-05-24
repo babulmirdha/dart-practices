@@ -11,6 +11,11 @@ dependencies:
   shelf_router: ^1.1.4
   shelf_cors_headers:
   path: ^1.9.0
+  # dart pub add mysql1
+  # flutter pub add mysql1
+  mysql1: ^0.20.0
+  mongo_dart: ^0.10.5
+  sqlite3: ^2.7.6
 
 
 

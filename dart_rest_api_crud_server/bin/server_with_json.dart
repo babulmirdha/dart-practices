@@ -45,13 +45,13 @@ Router get router {
   final router = Router();
 
   // GET all products
-  router.get('/products', (Request request) {
+  router.get('/api/products', (Request request) {
     final data = readData();
     return _jsonResponse(data['products']);
   });
 
   // GET product by ID
-  router.get('/products/<id|[0-9]+>', (Request request, String id) {
+  router.get('/api/products/<id|[0-9]+>', (Request request, String id) {
     final data = readData();
     final product = data['products']
         .firstWhere((p) => p['id'] == int.parse(id), orElse: () => null);
@@ -62,7 +62,7 @@ Router get router {
   });
 
   // POST: Create product
-  router.post('/products', (Request request) async {
+  router.post('/api/products', (Request request) async {
     final payload = await request.readAsString();
     final body = jsonDecode(payload);
 
@@ -83,7 +83,7 @@ Router get router {
   });
 
   // PUT: Update product
-  router.put('/products/<id|[0-9]+>', (Request request, String id) async {
+  router.put('/api/products/<id|[0-9]+>', (Request request, String id) async {
     final payload = await request.readAsString();
     final body = jsonDecode(payload);
 
@@ -109,7 +109,7 @@ Router get router {
   });
 
   // DELETE: Remove product
-  router.delete('/products/<id|[0-9]+>', (Request request, String id) {
+  router.delete('/api/products/<id|[0-9]+>', (Request request, String id) {
     final data = readData();
     final products = data['products'] as List;
     final index = products.indexWhere((p) => p['id'] == int.parse(id));
