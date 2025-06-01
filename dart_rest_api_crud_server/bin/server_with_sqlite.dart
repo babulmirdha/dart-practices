@@ -120,6 +120,8 @@ Router get router {
 }
 
 void main() async {
+
+  //init database
   initDb();
 
   final handler = const Pipeline()
@@ -127,6 +129,6 @@ void main() async {
       .addMiddleware(corsHeaders())
       .addHandler(router.call);
 
-  final server = await shelf_io.serve(handler, 'localhost', 3000);
-  print('✅ Server running at http://localhost:${server.port}');
+  final server = await shelf_io.serve(handler, '192.168.10.249', 3000);
+  print('✅ Server running at http://192.168.10.249:${server.port}');
 }
