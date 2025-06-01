@@ -17,8 +17,8 @@ Middleware checkAuth() {
       final token = authHeader.substring(7);
       try {
         final jwt = JWT.verify(token, SecretKey(secretKey));
-        final username = jwt.payload['username'];
-        return innerHandler(request.change(context: {'username': username}));
+        final email = jwt.payload['email'];
+        return innerHandler(request.change(context: {'email': email}));
       } catch (_) {
         return Response.forbidden('Invalid or expired token');
       }
@@ -26,7 +26,7 @@ Middleware checkAuth() {
   };
 }
 
-// Utility: Get username from request context
+// Utility: Get email from request context
 String? getUsernameFromRequest(Request request) {
-  return request.context['username'] as String?;
+  return request.context['email'] as String?;
 }

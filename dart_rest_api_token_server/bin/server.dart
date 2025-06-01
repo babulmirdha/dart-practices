@@ -6,6 +6,7 @@ import 'package:shelf_router/shelf_router.dart';
 import 'routes/auth_routes.dart';
 import 'routes/product_routes.dart';
 import 'middlewares/checkAuth.dart';
+import 'middlewares/corsMiddleware.dart';
 
 void main() async {
 
@@ -22,6 +23,7 @@ void main() async {
 
   final handler = Pipeline()
       .addMiddleware(logRequests())
+      .addMiddleware(corsMiddleware()) // 👈 Add here
       .addMiddleware((innerHandler) {
     // Protect only /api/auth/me for now
     return (request) {
@@ -33,6 +35,7 @@ void main() async {
   })
       .addHandler(router);
 
-  final server = await io.serve(handler, InternetAddress.anyIPv4, 5000);
-  print('✅ Server running on http://localhost:${server.port}');
+  // final server = await io.serve(handler, InternetAddress.anyIPv4, 5000);
+  final server = await io.serve(handler, "192.168.10.249", 3000);
+  print('✅ Server running on http://192.168.10.249:${server.port}');
 }

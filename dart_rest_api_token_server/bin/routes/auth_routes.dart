@@ -15,7 +15,7 @@ void setupUserDatabase() {
   db.execute('''
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT UNIQUE,
+  email TEXT UNIQUE,
   password TEXT,
   name TEXT,
   gender TEXT,
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS users (
 }
 
 // JWT generator
-String generateToken(String username) {
-  final jwt = JWT({'username': username});
+String generateToken(String email) {
+  final jwt = JWT({'email': email});
   return jwt.sign(SecretKey(secretKey), expiresIn: Duration(hours: 1));
 }
 
@@ -40,7 +40,7 @@ Router authRoutes() {
     final body = await request.readAsString();
     final data = jsonDecode(body);
 
-    final username = data['username'];
+    final email = data['email'];
     final password = data['password'];
     final name = data['name'];
     final gender = data['gender'];
@@ -48,11 +48,11 @@ Router authRoutes() {
 
     try {
       db.execute('''
-        INSERT INTO users (username, password, name, gender, dob)
+        INSERT INTO users (email, password, name, gender, dob)
         VALUES (?, ?, ?, ?, ?)
-      ''', [username, password, name, gender, dob]);
+      ''', [email, password, name, gender, dob]);
 
-      final token = generateToken(username);
+      final token = generateToken(email);
       return Response.ok(jsonEncode({'token': token}), headers: {'Content-Type': 'application/json'});
     } catch (e) {
       return Response(409, body: 'User already exists');
@@ -64,13 +64,13 @@ Router authRoutes() {
     final body = await request.readAsString();
     final data = jsonDecode(body);
 
-    final username = data['username'];
+    final email = data['email'];
     final password = data['password'];
 
-    final result = db.select('SELECT * FROM users WHERE username = ? AND password = ?', [username, password]);
+    final result = db.select('SELECT * FROM users WHERE email = ? AND password = ?', [email, password]);
 
     if (result.isNotEmpty) {
-      final token = generateToken(username);
+      final token = generateToken(email);
       return Response.ok(jsonEncode({'token': token}), headers: {'Content-Type': 'application/json'});
     } else {
       return Response.forbidden('Invalid credentials');
@@ -79,9 +79,9 @@ Router authRoutes() {
 
   // Me (protected)
   router.get('/me', (Request request) {
-    final username = request.context['username'];
+    final email = request.context['email'];
 
-    final result = db.select('SELECT username, name, gender, dob FROM users WHERE username = ?', [username]);
+    final result = db.select('SELECT id, email, name, gender, dob FROM users WHERE email = ?', [email]);
 
     if (result.isEmpty) {
       return Response.notFound('User not found');
@@ -90,7 +90,8 @@ Router authRoutes() {
     final user = result.first;
     return Response.ok(
       jsonEncode({
-        'username': user['username'],
+        'id' : user['id'],
+        'email': user['email'],
         'name': user['name'],
         'gender': user['gender'],
         'dob': user['dob'],
